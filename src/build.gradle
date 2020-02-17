@@ -1,0 +1,83 @@
+// remove this two imports from 7.x
+import org.elasticsearch.gradle.testclusters.TestClustersRegistry
+
+import javax.security.auth.login.Configuration
+
+import org.elasticsearch.gradle.testclusters.TestClustersPlugin
+
+buildscript {
+  repositories {
+    mavenLocal()
+    mavenCentral()
+    jcenter()
+  }
+
+  dependencies {
+    classpath "org.elasticsearch.gradle:build-tools:7.5.2"
+  }
+}
+
+group = 'org.elasticsearch.plugin.ingest'
+version = '0.0.1-SNAPSHOT'
+
+apply plugin: 'java'
+apply plugin: 'idea'
+apply plugin: 'eclipse'
+apply plugin: 'elasticsearch.esplugin'
+
+// license of this project
+licenseFile = rootProject.file('LICENSE.txt')
+// copyright notices
+noticeFile = rootProject.file('NOTICE.txt')
+
+esplugin {
+  name 'ingest-test'
+  description 'Simulates ingest pipeline, compares result against expected test data and outputs any diffs in JSON Patch format'
+  classname 'org.elasticsearch.plugin.ingest.test.IngestTestPlugin'
+  // license of the plugin, may be different than the above license
+  licenseFile rootProject.file('LICENSE.txt')
+  // copyright notices, may be different than the above notice
+  noticeFile rootProject.file('NOTICE.txt')
+}
+
+// In this section you declare the dependencies for your production and test code
+// Note, the two dependencies are not really needed as the buildscript dependency gets them in already
+// they are just here as an example
+dependencies {
+	configurations.all {
+		resolutionStrategy {
+			force 'com.fasterxml.jackson.core:jackson-core:2.8.11'
+		}
+	}
+  compile 'org.elasticsearch:elasticsearch:7.5.2'
+
+  testCompile 'org.elasticsearch.test:framework:7.5.2'
+  //implementation "com.flipkart.zjsonpatch:zjsonpatch:0.4.9"
+  compile group: 'com.flipkart.zjsonpatch', name: 'zjsonpatch', version: '0.4.9'
+  
+}
+
+// Set to false to not use elasticsearch checkstyle rules
+checkstyleMain.enabled = true
+checkstyleTest.enabled = true
+
+// FIXME dependency license check needs to be enabled
+dependencyLicenses.enabled = false
+
+// FIXME thirdparty audit needs to be enabled
+thirdPartyAudit.enabled = false
+
+// Uncomment this to skip license header checks
+// licenseHeaders.enabled = false
+
+// remove all these lines till EOF with the release of 7.x
+configurations.whenObjectAdded { c ->
+  if (c.name == 'elasticsearch_7.5.0_integ_test_zip_null') {
+    project.dependencies.add('elasticsearch_7.5.0_integ_test_zip_null', 'org.elasticsearch.distribution.integ-test-zip:elasticsearch:7.5.0@zip')
+  }
+}
+
+TestClustersRegistry registry = project.rootProject.extensions.create("testClustersRegistry", TestClustersRegistry)
+TestClustersPlugin.configureClaimClustersHook(project.gradle, registry)
+TestClustersPlugin.configureStartClustersHook(project.gradle, registry)
+TestClustersPlugin.configureStopClustersHook(project.gradle, registry)
