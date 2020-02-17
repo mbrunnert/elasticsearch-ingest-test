@@ -44,17 +44,10 @@ esplugin {
 // Note, the two dependencies are not really needed as the buildscript dependency gets them in already
 // they are just here as an example
 dependencies {
-	configurations.all {
-		resolutionStrategy {
-			force 'com.fasterxml.jackson.core:jackson-core:2.8.11'
-		}
-	}
-  compile 'org.elasticsearch:elasticsearch:7.5.2'
+  compile 'com.fasterxml.jackson.core:jackson-databind:2.8.11'
+  compile 'com.flipkart.zjsonpatch:zjsonpatch:0.4.9'
 
   testCompile 'org.elasticsearch.test:framework:7.5.2'
-  //implementation "com.flipkart.zjsonpatch:zjsonpatch:0.4.9"
-  compile group: 'com.flipkart.zjsonpatch', name: 'zjsonpatch', version: '0.4.9'
-  
 }
 
 // Set to false to not use elasticsearch checkstyle rules
