@@ -1,0 +1,39 @@
+{
+  "ingest.test":{
+    "documentation":{
+      "description":"Simulates ingest pipeline, compares result against expected test data and outputs any diffs in JSON Patch format"
+    },
+    "stability":"stable",
+    "url":{
+      "paths":[
+        {
+          "path":"/_ingest/pipeline/_test",
+          "methods":[
+            "GET",
+            "POST"
+          ]
+        },
+        {
+          "path":"/_ingest/pipeline/{id}/_test",
+          "methods":[
+            "GET",
+            "POST"
+          ],
+          "parts":{
+            "id":{
+              "type":"string",
+              "description":"Pipeline ID"
+            }
+          }
+        }
+      ]
+    },
+    "params":{
+
+    },
+    "body":{
+      "description":"The simulate definition",
+      "required":true
+    }
+  }
+}

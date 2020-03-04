@@ -1,0 +1,42 @@
+---
+"Test against test API":
+   - do:
+       ingest.put_pipeline:
+         id: "my_pipeline"
+         body:  >
+           {
+             "description": "_description",
+             "processors": [
+
+             ]
+           }
+   - match: { acknowledged: true }
+
+   - do:
+       "ingest.test":
+         id: "my_pipeline"
+         body: >
+           {
+             "docs": [
+                      {
+                        "_index": "index",
+                        "_id": "id",
+                        "_source": {
+                          "foo": "bar"
+                        }
+                      }],
+                      "expected_docs" : [{
+                        "_index": "index",
+                        "_id": "id",
+                        "_type" : "_doc",
+                        "_source": {
+                          "foo1": "bar",
+                          "field2" : "value"
+                        }
+                      }
+                    ]
+           }
+
+   - length: { diff: 2 }
+   - match: { diff.0.op: "move" }
+   - match: { diff.0.path: "/0/_source/foo1" }
