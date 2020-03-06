@@ -129,4 +129,4 @@ bin/elasticsearch-plugin install file:///path/to/ingest-test/build/distribution/
 
 ## Acknowledgements
 
-The JSON diff functionality is implemented using [zjsonpatch]https://github.com/flipkart-incubator/zjsonpatch
+The JSON diff functionality is implemented using [zjsonpatch](https://github.com/flipkart-incubator/zjsonpatch)
