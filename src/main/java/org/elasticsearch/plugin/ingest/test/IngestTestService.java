@@ -1,5 +1,5 @@
 /*
- * Copyright [2018] [Mattias Brunnert]
+ * Copyright [2020] [Mattias Brunnert]
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -39,14 +39,14 @@ import org.elasticsearch.rest.action.RestToXContentListener;
  */
 
 /**
- * The test pipeline service decorates the _simulate action and returns a diff against 
+ * The test pipeline service decorates the _simulate action and returns a diff against
  * expected results provided as part of the request body
  * @author mattias
  */
 public class IngestTestService extends BaseRestHandler {
-    
+
     private static final String FIELD_EXPECTED_DOCS = "expected_docs";
-    
+
     public IngestTestService(final RestController controller) {
         controller.registerHandler(RestRequest.Method.POST, "/_ingest/pipeline/{id}/_test", this);
         controller.registerHandler(RestRequest.Method.GET, "/_ingest/pipeline/{id}/_test", this);
@@ -67,15 +67,15 @@ public class IngestTestService extends BaseRestHandler {
         request.setId(restRequest.param("id"));
         //Verbose simulate requests are not supported, since they return additional attributes that break the json diff
         request.setVerbose(restRequest.paramAsBoolean("verbose", false));
-        
+
         XContentParser parser = restRequest.contentParser();
         Map<String, Object> jsonMap = parser.map();
-        List expectedDocs = (List)jsonMap.get(FIELD_EXPECTED_DOCS);              
+        List expectedDocs = (List)jsonMap.get(FIELD_EXPECTED_DOCS);
         return channel -> {
-            RestToXContentListener<SimulatePipelineResponse> ingestTestXContentListener = 
+            RestToXContentListener<SimulatePipelineResponse> ingestTestXContentListener =
                     new IngestTestXContentListener(channel, expectedDocs);
             client.admin().cluster().simulatePipeline(request, ingestTestXContentListener);
         };
     }
-    
+
 }

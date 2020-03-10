@@ -1,5 +1,5 @@
 /*
- * Copyright [2018] [Mattias Brunnert]
+ * Copyright [2020] [Mattias Brunnert]
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -51,5 +51,5 @@ public class IngestTestPlugin extends Plugin implements ActionPlugin {
         pluginRestHandlers.add(new IngestTestService(restController));
         return pluginRestHandlers;
     }
-    
+
 }

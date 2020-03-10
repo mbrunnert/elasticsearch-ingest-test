@@ -1,5 +1,5 @@
 /*
- * Copyright [2018] [Mattias Brunnert]
+ * Copyright [2020] [Mattias Brunnert]
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -55,7 +55,7 @@ public class IngestTestXContentListener extends RestToXContentListener<SimulateP
 
     /**
      * Build object mapper
-     * 
+     *
      * @return object mapper
      */
     private static ObjectMapper buildObjectMapper() {
@@ -66,7 +66,7 @@ public class IngestTestXContentListener extends RestToXContentListener<SimulateP
 
     /**
      * Makes diff object more verbose by adding original value to diff
-     * 
+     *
      * @return diff flags
      */
     private static EnumSet<DiffFlags> buildDiffFlags() {
@@ -99,7 +99,7 @@ public class IngestTestXContentListener extends RestToXContentListener<SimulateP
     @SuppressWarnings("rawtypes")
     /**
      * Create list of diff objects
-     * 
+     *
      * @param simulateResults SimulatePipeline results
      * @return list of diff objects
      * @throws IllegalArgumentException

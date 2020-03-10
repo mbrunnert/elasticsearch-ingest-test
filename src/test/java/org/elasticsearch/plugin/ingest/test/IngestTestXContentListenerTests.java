@@ -1,7 +1,7 @@
 package org.elasticsearch.plugin.ingest.test;
 
 /*
- * Copyright [2019] [Mattias Brunnert]
+ * Copyright [2020] [Mattias Brunnert]
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -33,14 +33,14 @@ import com.flipkart.zjsonpatch.JsonDiff;
  * @author mattias
  */
 public class IngestTestXContentListenerTests extends ESTestCase {
-    
+
     public IngestTestXContentListenerTests() {
         JsonDiff diff = null;
     }
 
     @SuppressWarnings("unchecked")
     public void testEmptyDiff() {
-        
+
         TestBench testBench = TestBench.createSingleDocsBench();
 
         IngestTestXContentListener instance = new IngestTestXContentListener(null, testBench.expectedDocs);
@@ -48,13 +48,13 @@ public class IngestTestXContentListenerTests extends ESTestCase {
         Assert.assertEquals(0, instance.createDiff(testBench.testDocs).size());
 
     }
-    
+
     @SuppressWarnings({ "rawtypes", "unchecked" })
     public void testSingleFieldDiff() {
         TestBench testBench = TestBench.createSingleDocsBench();
         putToSource(testBench.expectedDocs.get(0), "title", "test");
         IngestTestXContentListener instance = new IngestTestXContentListener(null, testBench.expectedDocs);
-        final List diff = instance.createDiff(testBench.testDocs);     
+        final List diff = instance.createDiff(testBench.testDocs);
         Assert.assertEquals(1, diff.size());
         ArrayList expectedDiff = new ArrayList();
         HashMap<String, Object> expectedDiff1 = new HashMap<>();
@@ -64,18 +64,18 @@ public class IngestTestXContentListenerTests extends ESTestCase {
         expectedDiff.add(expectedDiff1);
         Assert.assertEquals(expectedDiff, diff);
     }
-    
+
     public void testReformatSimulateResult() {
         HashMap<String, Object> expected = new HashMap<>();
         putMetaAndEmptySource(expected, true);
         putToSource(expected, "title", "test");
-        
+
         HashMap<String, Object> source = new HashMap<>();
         source.put("title", "test");
         IngestDocument ingestDocument = new IngestDocument("index", "_doc", "id", null, null, null, source);
         SimulateDocumentBaseResult simulateResult = new SimulateDocumentBaseResult(ingestDocument);
         Map<String, Object> reformated = IngestTestXContentListener.reformatSimulateResult(simulateResult);
-        
+
         Assert.assertEquals(expected, reformated);
     }
 
@@ -87,36 +87,36 @@ public class IngestTestXContentListenerTests extends ESTestCase {
         }
         doc.put("_source", new HashMap<String, Object>());
     }
-    
+
     @SuppressWarnings("unchecked")
     private static void putToSource(Object document, String name, Object value) {
         Object _source = ((Map<String, Object>)document).get("_source");
         ((Map<String, Object>)_source).put(name, value);
     }
 
-    
+
     private static class TestBench {
 
-        
+
         @SuppressWarnings("rawtypes")
         public List testDocs;
-        
+
         @SuppressWarnings("rawtypes")
         public List expectedDocs;
 
         @SuppressWarnings("unchecked")
         public static TestBench createSingleDocsBench() {
             TestBench testBench = new TestBench();
-            
+
             Map<String, Object> testDoc = new HashMap<>();
             putMetaAndEmptySource(testDoc, false);
-            
+
             testBench.testDocs.add(testDoc);
-            
+
             Map<String, Object> expectedDoc = new HashMap<>();
             putMetaAndEmptySource(expectedDoc, false);
             testBench.expectedDocs.add(expectedDoc);
-            
+
             return testBench;
         }
 
