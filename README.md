@@ -7,7 +7,7 @@ API for testing ingest pipelines against expected results. It simulates ingest p
 The API is called using the same parameters and body as the [simulate api](https://www.elastic.co/guide/en/elasticsearch/reference/master/simulate-pipeline-api.html), with the addition of the expected_docs body parameter. Note that:
 
 * Verbose mode is not supported.
-* Simulate API always adds `"_id": "id"` if no value is provided. The `_id` field needs to be added at least to `expected_docs` to avoid test failure
+* Simulate API always adds `"_id": "id, "_index" : "_index", "_type" : "_doc","` metadata if no values are provided. These fields need to be added at least to `expected_docs` documents to avoid test failure
 * The `diff` objects describes the action to be performed by the pipeline in order for the test to pass. E.g. in the example below, the pipeline should be extended to move (rename) the field `foo` to `foo1`.
 
 Example request
@@ -133,7 +133,7 @@ After building the zip file, you can install it like this
 bin/elasticsearch-plugin install file:///path/to/ingest-test/build/distribution/ingest-test-version.zip
 ```
 
-Note that you need to install the plugin on every Elasticsearch node that you intend to make API requests against. Nodes do not need any specific roles for the plugin to function, as long as you have at least one ingest node in your cluster. 
+Note that you need to install the plugin on every Elasticsearch node that you intend to make API requests against. Nodes do not need any specific roles for the plugin to function, as long as you have at least one ingest node in your cluster.
 
 ## Acknowledgements
 
